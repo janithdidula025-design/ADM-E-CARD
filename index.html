@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADM Digital Card</title>
+    <style>
+        :root { --primary: #0d237d; --accent: #50e3c2; --dark: #050811; }
+        body { margin: 0; padding: 20px 0; font-family: sans-serif; background: radial-gradient(circle at top, #0d237d 0%, var(--dark) 95%); color: white; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        .container { width: 90%; max-width: 380px; background: rgba(255,255,255,0.08); padding: 30px 15px; border-radius: 45px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(20px); text-align: center; }
+        .p-img { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent); margin-bottom: 15px; }
+        .btn { padding: 16px; border-radius: 20px; border: none; font-weight: bold; text-decoration: none; display: block; margin-bottom: 10px; font-size: 0.9rem; }
+        .btn-w { background: #fff; color: var(--primary); }
+        .btn-g { background: #25D366; color: #fff; }
+        .btn-b { background: #007bff; color: #fff; width: 100%; cursor: pointer; }
+        .qr-card { background:#fff; width:80px; height:80px; margin:20px auto; padding:8px; border-radius:12px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img id="cardLogo" src="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg" class="p-img">
+        <div style="color:var(--accent); font-weight:bold;">ADM Higher Education</div>
+        <h2 style="margin:5px 0;">JANITH DIDULA</h2>
+        <p style="opacity:0.7; font-size:0.8rem; margin-bottom:20px;">Organizer / Manager</p>
+        <div style="margin-bottom:20px; font-size:0.9rem;">📍 මීගමුව පාර, නාරම්මල<br>📞 0710658051</div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+            <a href="tel:0710658051" class="btn btn-w">📞 CALL</a>
+            <a href="https://wa.me/94710658051" class="btn btn-g">💬 WHATSAPP</a>
+        </div>
+        <button onclick="saveContact()" class="btn btn-b">👤 SAVE CONTACT</button>
+        <div class="qr-card"><img id="qrc" style="width:100%;"></div>
+    </div>
+    <script>
+        window.onload = () => {
+            let saved = localStorage.getItem('adm_logo_data');
+            if(saved) document.getElementById('cardLogo').src = saved;
+            document.getElementById('qrc').src = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(window.location.href)}`;
+        };
+        function saveContact() {
+            const v = `BEGIN:VCARD\nVERSION:3.0\nFN:Janith Didula (ADM)\nTEL:0710658051\nEND:VCARD`;
+            const b = new Blob([v], {type:'text/vcard'});
+            const a = document.createElement('a'); a.href=URL.createObjectURL(b); a.download='Janith_ADM.vcf'; a.click();
+        }
+    </script>
+</body>
+</html>
