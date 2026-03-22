@@ -6,77 +6,205 @@
     <title>ADM Admin Panel</title>
     <link rel="manifest" href="manifest.json">
     <style>
-        body { font-family: sans-serif; background: #050811; color: white; text-align: center; margin: 0; padding: 20px; }
-        .card { background: #12182b; padding: 30px 20px; border-radius: 35px; border: 1px solid #50e3c2; max-width: 360px; margin: auto; position: relative; overflow: hidden; }
-        .logo-preview { width: 110px; height: 110px; border-radius: 50%; border: 3px solid #50e3c2; margin-bottom: 20px; object-fit: cover; }
-        .btn { width: 100%; padding: 18px; border-radius: 15px; border: none; font-weight: bold; cursor: pointer; font-size: 1rem; margin-top: 12px; }
-        .btn-img { background: #50e3c2; color: #050811; }
-        .btn-wa { background: #25D366; color: white; margin-top: 35px; }
+        :root {
+            --primary: #50e3c2;
+            --bg-dark: #050811;
+            --card-bg: rgba(18, 24, 43, 0.95);
+        }
+
+        body { 
+            font-family: 'Segoe UI', Roboto, sans-serif; 
+            background: var(--bg-dark);
+            /* අධ්‍යාපනයට අදාළ පසුබිම් කලාව */
+            background-image: linear-gradient(rgba(5, 8, 17, 0.8), rgba(5, 8, 17, 0.8)), 
+                              url('https://www.transparenttextures.com/patterns/cubes.png');
+            color: white; 
+            text-align: center; 
+            margin: 0; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .card { 
+            background: var(--card-bg); 
+            padding: 40px 25px; 
+            border-radius: 40px; 
+            border: 2px solid var(--primary); 
+            max-width: 400px; 
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(80, 227, 194, 0.2);
+            position: relative; 
+            overflow: hidden; 
+        }
+
+        /* Logo එක මත ක්ලික් කළ හැකි බව පෙන්වීමට */
+        .logo-container {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+        
+        .logo-preview { 
+            width: 130px; 
+            height: 130px; 
+            border-radius: 50%; 
+            border: 4px solid var(--primary); 
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .logo-container:active .logo-preview { transform: scale(0.95); }
+
+        .edit-badge {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: var(--primary);
+            color: black;
+            border-radius: 50%;
+            padding: 5px;
+            font-size: 12px;
+        }
+
+        h3 { color: var(--primary); margin-bottom: 5px; letter-spacing: 1px; }
+
+        /* පෝන් අංකය ඇතුළත් කරන කොටස */
+        .input-group { margin-top: 30px; }
+        
+        input[type="tel"] { 
+            width: 100%; 
+            padding: 20px; 
+            box-sizing: border-box;
+            border-radius: 20px; 
+            border: 2px solid #333; 
+            background: #000; 
+            color: var(--primary); 
+            text-align: center; 
+            font-size: 1.8rem; /* විශාල ඉලක්කම් */
+            font-weight: bold;
+            outline: none; 
+            margin-bottom: 20px;
+        }
+
+        input[type="tel"]:focus { border-color: var(--primary); }
+
+        .btn { 
+            width: 100%; 
+            padding: 20px; 
+            border-radius: 20px; 
+            border: none; 
+            font-weight: bold; 
+            cursor: pointer; 
+            font-size: 1.1rem; 
+            margin-top: 15px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-wa { background: #25D366; color: white; }
         .btn-sms { background: #fff; color: #000; }
-        input[type="tel"] { width: 90%; padding: 15px; margin: 10px 0; border-radius: 15px; border: 1px solid #333; background: #000; color: #fff; text-align: center; font-size: 1.2rem; outline: none; }
-        #lockScreen { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; border-radius: 35px; z-index: 10; justify-content: center; align-items: center; flex-direction: column; }
+
+        #lockScreen { 
+            display: none; 
+            position: absolute; 
+            top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.95); 
+            z-index: 100; 
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .usage-text { font-size: 0.8rem; color: #ff4757; margin-top: 20px; font-weight: bold; }
     </style>
 </head>
 <body>
+
     <div class="card">
         <div id="lockScreen">
-            <h2 style="color: #ff4757;">⛔ ACCESS LOCKED</h2>
-            <p style="padding: 20px;">භාවිතා කළ හැකි වාර 100,000 සීමාව ඉක්මවා ඇත.</p>
+            <h2 style="color: #ff4757; font-size: 2rem;">⛔ ACCESS LOCKED</h2>
+            <p style="padding: 20px;">භාවිතා කළ හැකි වාර 1,000,000 සීමාව ඉක්මවා ඇත.</p>
         </div>
 
-        <img id="prev" src="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg" class="logo-preview">
-        <h3 style="margin:0; color:#50e3c2;">ADM ADMIN APP</h3>
-        
-        <p style="font-size: 0.8rem; margin-top: 20px; opacity:0.7;">ගැලරියෙන් Logo එකක් තෝරන්න</p>
+        <div class="logo-container" onclick="document.getElementById('fileInp').click()">
+            <img id="prev" src="https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg" class="logo-preview">
+            <div class="edit-badge">📷</div>
+        </div>
         <input type="file" id="fileInp" accept="image/*" style="display: none;" onchange="handleImage(this)">
-        <button class="btn btn-img" onclick="document.getElementById('fileInp').click()">🖼️ CHOOSE FROM GALLERY</button>
 
-        <hr style="opacity: 0.1; margin: 30px 0;">
+        <h3>ADM ADMIN APP</h3>
+        <p style="font-size: 0.8rem; opacity: 0.7;">Logo එක වෙනස් කිරීමට පින්තූරය Touch කරන්න</p>
 
-        <p style="font-size: 0.8rem; opacity: 0.7;">පාරිභෝගිකයාට Card එක යවන්න</p>
-        <input type="tel" id="phone" placeholder="07XXXXXXXX" inputmode="numeric" maxlength="10">
-        <button class="btn btn-wa" onclick="send('wa')">📲 SEND WHATSAPP</button>
-        <button class="btn btn-sms" onclick="send('sms')">💬 SEND SMS</button>
+        <div class="input-group">
+            <input type="tel" id="phone" placeholder="07XXXXXXXX" inputmode="numeric" maxlength="10">
+            <button class="btn btn-wa" onclick="send('wa')">
+                <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" width="24"> SEND WHATSAPP
+            </button>
+            <button class="btn btn-sms" onclick="send('sms')">
+                <img src="https://cdn-icons-png.flaticon.com/512/6124/6124119.png" width="24"> SEND SMS
+            </button>
+        </div>
         
-        <div style="font-size:0.7rem; color:#ff4757; margin-top:15px;" id="usageInfo">භාවිතය: 0 / 100,000</div>
+        <div class="usage-text" id="usageInfo">භාවිතය: 0 / 1,000,000</div>
     </div>
 
     <script>
-        const MAX_LIMIT = 100000;
+        const MAX_LIMIT = 1000000;
+
         window.onload = () => {
             updateUI();
-            if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js').catch(() => {});
+            }
         };
+
         function handleImage(input) {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     localStorage.setItem('adm_logo_data', e.target.result);
                     document.getElementById('prev').src = e.target.result;
+                    alert("Logo එක සාර්ථකව යාවත්කාලීන වුණා!");
                 };
                 reader.readAsDataURL(input.files[0]);
             }
         }
+
         function updateUI() {
             let count = parseInt(localStorage.getItem('adm_send_count')) || 0;
             let savedImg = localStorage.getItem('adm_logo_data');
-            document.getElementById('usageInfo').innerText = `භාවිතය: ${count.toLocaleString()} / 100,000`;
+            
+            document.getElementById('usageInfo').innerText = `භාවිතය: ${count.toLocaleString()} / 1,000,000`;
+            
             if(savedImg) document.getElementById('prev').src = savedImg;
             if(count >= MAX_LIMIT) document.getElementById('lockScreen').style.display = 'flex';
         }
+
         function send(mode) {
             let count = parseInt(localStorage.getItem('adm_send_count')) || 0;
             if(count >= MAX_LIMIT) return;
+
             let num = document.getElementById('phone').value;
-            if(num.length < 10) return alert("අංකය පරීක්ෂා කරන්න!");
+            if(num.length < 10) return alert("කරුණාකර නිවැරදි දුරකථන අංකයක් ඇතුළත් කරන්න!");
+
             localStorage.setItem('adm_send_count', count + 1);
             updateUI();
+
+            // Card එකේ URL එක (මෙහි index.html ලෙස සලකනු ලැබේ)
             let link = window.location.href.replace('admin.html', 'index.html');
             let msg = encodeURIComponent(`ආයුබෝවන්! 👋\nADM Higher Education Digital E-Card එක මෙතනින් ලබාගන්න:\n🔗 ${link}`);
+
             if(mode === 'wa') {
                 let f = num.startsWith('0') ? '94' + num.substring(1) : num;
                 window.open(`https://wa.me/${f}?text=${msg}`);
-            } else { window.open(`sms:${num}?body=${msg}`); }
+            } else {
+                window.open(`sms:${num}?body=${msg}`);
+            }
         }
     </script>
 </body>
