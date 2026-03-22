@@ -1,9 +1,16 @@
 {
-  "name": "ADM Admin App",
-  "short_name": "ADM Admin",
-  "start_url": "admin.html",
+  "name": "ADM Digital Card",
+  "short_name": "ADM Card",
+  "start_url": "index.html",
   "display": "standalone",
-  "background_color": "#0d237d",
+  "background_color": "#050811",
   "theme_color": "#0d237d",
-  "icons": [{ "src": "https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg", "sizes": "512x512", "type": "image/jpeg" }]
+  "icons": [
+    {
+      "src": "https://raw.githubusercontent.com/janithdidula025-design/adm-vcard/main/logo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
 }
